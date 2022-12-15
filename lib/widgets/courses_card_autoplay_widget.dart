@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:motchill/models/movie_model.dart';
 import 'package:motchill/widgets/modal_bottomSheet.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/movies_provider.dart';
 
 class CardSwiper extends StatelessWidget {
   const CardSwiper({Key? key, required this.movies, required this.title})
@@ -12,6 +15,7 @@ class CardSwiper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+     final videoProvider = Provider.of<MovieProvide>(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -36,19 +40,23 @@ class CardSwiper extends StatelessWidget {
             enlargeCenterPage: true,
             aspectRatio: 10.0,
           ),
-          items: movies.map((i) {
+          items: movies.asMap().entries.map((item) {
+            int index = item.key ; 
+            Movie value = item.value ; 
             return Builder(
               builder: (BuildContext context) {
                 return GestureDetector(
-                  onTap: () => {} ,
+                  onTap: () => {
+                     bottomsheets(context, movies[index] , videoProvider)
+                  } ,
                   child: Container(
                     height: MediaQuery.of(context).size.height * 1,
                     margin: EdgeInsets.symmetric(horizontal: 1.0),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Image.network("${i.fullBackdropPath}"),
-                        Text("${i.title}"),
+                        Image.network("${value.fullBackdropPath}"),
+                        Text("${value.title}"),
                       ],
                     ),
                   ),

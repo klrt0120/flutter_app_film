@@ -88,7 +88,6 @@ class _PlayButton extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         print("Video");
-        print(videoProvider.dataVideos);
       },
       child: Container(
         padding: EdgeInsets.only(right: 10, left: 5, top: 5, bottom: 5),
