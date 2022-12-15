@@ -1,17 +1,11 @@
 import 'dart:math';
 import 'dart:ui';
-
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:motchill/providers/movies_provider.dart';
-import 'package:motchill/utils/consstants.dart';
 import 'package:motchill/widgets/content_Header.dart';
 import 'package:provider/provider.dart';
-
 import '../widgets/courses_card_autoplay_widget.dart';
 import '../widgets/custom_app_bar.dart';
-
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -64,13 +58,13 @@ class _HomePageState extends State<HomePage> {
                 child: Column(
               children: [
                 ContentHeader(
-                    featuredContent: moviesProvider.onDisplayMovies.length > 0
+                    featuredContent: moviesProvider!.onDisplayMovies!.length > 0
                         ? moviesProvider.onDisplayMovies[random.nextInt(10)]
-                        : moviesProvider.onDisplayMovies[0]),
+                        : moviesProvider!.onDisplayMovies[0]),
                 CardSwiper(
                   movies: moviesProvider.onDisplayMovies,
                   title: "Phim mới cập nhập",
-                )
+                ),
               ],
             ))
           ],

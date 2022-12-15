@@ -17,6 +17,6 @@ class GetVideoModel {
   factory GetVideoModel.fromMap(Map<String, dynamic> json) => GetVideoModel(
         id: json["id"],
         results:
-            List<Video>.from(json["results"].map((x) => Video.fromJson(x))),
+            List<Video>.from(json["results"].map((x) => Video.fromMap(x))),
       );
 }

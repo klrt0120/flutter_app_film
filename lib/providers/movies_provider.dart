@@ -55,15 +55,16 @@ class MovieProvide extends ChangeNotifier {
       'language': "en",
       'page': '$page',
     });
-    https: //api.themoviedb.org/3/movie/787459/videos?api_key=d8f8edbbdc27ab9a16942772f29aa16c&language=vi
+ 
     final response = await http.get(url);
     return response.body;
   }
 
-  getVideo(String category, String id) async {
-    final jsonData = await _getJsonData_Video(category, id);
+  getVideo(String category, String? id) async {
+    final jsonData = await _getJsonData_Video(category, id.toString());
     final getvideoData = GetVideoModel.fromJson(jsonData);
     dataVideos = getvideoData.results!;
+    print(dataVideos[0].key) ;
     notifyListeners();
   }
 

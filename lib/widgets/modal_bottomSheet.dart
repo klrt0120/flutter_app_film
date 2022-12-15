@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:motchill/core/routes/routes.dart';
+import 'package:motchill/models/video_model.dart';
+import 'package:motchill/providers/movies_provider.dart';
 import 'package:motchill/widgets/iconButton_widget.dart';
+import 'package:provider/provider.dart';
 
 import '../models/movie_model.dart';
+import '../screens/trailer.dart';
 
-void bottomsheets(context, Movie movies) {
+void bottomsheets(context, Movie movies, MovieProvide video) {
+  ;
   showModalBottomSheet<void>(
       context: context,
       shape: RoundedRectangleBorder(
@@ -42,8 +48,7 @@ void bottomsheets(context, Movie movies) {
                       image: NetworkImage("${movies.fullPosterImg}"),
                       width: MediaQuery.of(context).size.width * 0.3),*/
                   FadeInImage(
-                      placeholder:
-                         AssetImage("assets/images/no-image.jpg"),
+                      placeholder: AssetImage("assets/images/no-image.jpg"),
                       image: NetworkImage(movies.fullPosterImg),
                       fit: BoxFit.cover,
                       width: MediaQuery.of(context).size.width * 0.3),
@@ -116,15 +121,27 @@ void bottomsheets(context, Movie movies) {
                   VerticalIconButton(
                       icon: Icons.play_circle,
                       title: "Xem ngay",
-                      onTap: () => print("Xem ngay")),
+                      onTap: () {
+                        () async {
+                          print('Fetching user order...');
+                          var respon = await video.getVideo(
+                              "movie", movies.id.toString());
+                          Navigator.pushNamed(context, AppRoutes.TrailerRoutes,
+                              arguments: video.dataVideos);
+                        }();
+
+                        // video.getVideo("movie", movies.id.toString());
+                        // if (!video.dataVideos.isEmpty) {
+                        //     Navigator.pushNamed(context, AppRoutes.TrailerRoutes,
+                        //       arguments: video.dataVideos);
+                        // }
+                      }),
+                  VerticalIconButton(
+                      icon: Icons.info, title: "Trailer", onTap: () {}),
                   VerticalIconButton(
                       icon: Icons.add_box_sharp,
                       title: "Danh sách",
                       onTap: () => print("Danh sách")),
-                  VerticalIconButton(
-                      icon: Icons.info,
-                      title: "Chi tiết",
-                      onTap: () => print("Chi tiết"))
                 ],
               )
             ],

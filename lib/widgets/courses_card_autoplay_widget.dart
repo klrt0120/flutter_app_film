@@ -40,7 +40,7 @@ class CardSwiper extends StatelessWidget {
             return Builder(
               builder: (BuildContext context) {
                 return GestureDetector(
-                  onTap: () => bottomsheets(context, i),
+                  onTap: () => {} ,
                   child: Container(
                     height: MediaQuery.of(context).size.height * 1,
                     margin: EdgeInsets.symmetric(horizontal: 1.0),

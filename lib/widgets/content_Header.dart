@@ -16,6 +16,7 @@ class ContentHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final videoProvider = Provider.of<MovieProvide>(context);
     return Stack(
       alignment: Alignment.center,
       children: [
@@ -32,7 +33,10 @@ class ContentHeader extends StatelessWidget {
           /*onTap: () => Navigator.pushNamed(context, "/detail_movie",
               arguments: featuredContent)*/
           onTap: () {
-            bottomsheets(context, featuredContent);
+            print(featuredContent.title.toString());
+            // videoProvider.getVideo("Povie", featuredContent.id.toString());
+
+            bottomsheets(context, featuredContent , videoProvider);
           },
           child: Container(
             height: 500.0,
@@ -83,9 +87,8 @@ class _PlayButton extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        videoProvider.getVideo(category, movieId);
-        print("Video") ;
-        print(videoProvider.dataVideos) ;
+        print("Video");
+        print(videoProvider.dataVideos);
       },
       child: Container(
         padding: EdgeInsets.only(right: 10, left: 5, top: 5, bottom: 5),

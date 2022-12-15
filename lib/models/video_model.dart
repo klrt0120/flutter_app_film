@@ -41,4 +41,5 @@ class Video{
         publishedAt: DateTime.parse(json["published_at"]),
         id: json["id"],
       );
+      
 }
