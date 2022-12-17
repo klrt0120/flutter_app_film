@@ -13,6 +13,7 @@ void main() {
 class Core extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+ 
     return MultiProvider(
       providers: AppProvider.providers,
       child: MotChill(),

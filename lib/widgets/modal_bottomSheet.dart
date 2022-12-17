@@ -9,17 +9,28 @@ import '../models/movie_model.dart';
 import '../screens/trailer.dart';
 
 void bottomsheets(context, Movie movies, MovieProvide video) {
-  ;
+  // Hàm fetch data film theo id
+  final String id;
+  final String action = "watch_now";
+  final String category = "movie";
+  // Phải xử lý bottom với tv shows ...
+  Future<void> fetchDataVideoTrailer(String id, Function router_func) async {
+    print('Dữ liệu đang tải...');
+
+    var respon = await video.getVideo(category, id);
+    router_func();
+  }
+
   showModalBottomSheet<void>(
       context: context,
-      shape: RoundedRectangleBorder(
+      shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
           top: Radius.circular(20),
         ),
       ),
       builder: (BuildContext context) {
         return Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: Colors.transparent,
             borderRadius: BorderRadius.all(
               Radius.circular(5000),
@@ -52,7 +63,7 @@ void bottomsheets(context, Movie movies, MovieProvide video) {
                       image: NetworkImage(movies.fullPosterImg),
                       fit: BoxFit.cover,
                       width: MediaQuery.of(context).size.width * 0.3),
-                  SizedBox(
+                  const SizedBox(
                     width: 15,
                   ),
                   Column(
@@ -73,7 +84,7 @@ void bottomsheets(context, Movie movies, MovieProvide video) {
                                     '${movies.title}',
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 2,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         fontFamily: "Poppins",
                                         fontSize: 14,
                                         fontWeight: FontWeight.w600),
@@ -101,7 +112,7 @@ void bottomsheets(context, Movie movies, MovieProvide video) {
                           overflow: TextOverflow.ellipsis,
                           maxLines: 5,
                           textAlign: TextAlign.justify,
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontFamily: "Poppins",
                               fontSize: 10,
                               color: Colors.white,
@@ -122,22 +133,26 @@ void bottomsheets(context, Movie movies, MovieProvide video) {
                       icon: Icons.play_circle,
                       title: "Xem ngay",
                       onTap: () {
-                        () async {
-                          print('Fetching user order...');
-                          var respon = await video.getVideo(
-                              "movie", movies.id.toString());
-                          Navigator.pushNamed(context, AppRoutes.TrailerRoutes,
-                              arguments: video.dataVideos);
-                        }();
-
-                        // video.getVideo("movie", movies.id.toString());
-                        // if (!video.dataVideos.isEmpty) {
-                        //     Navigator.pushNamed(context, AppRoutes.TrailerRoutes,
-                        //       arguments: video.dataVideos);
-                        // }
+                        Navigator.pushNamed(context, AppRoutes.TrailerRoutes,
+                            arguments: {
+                              "id": movies.id.toString(),
+                              "action": "watch_now",
+                              "category": "movie",
+                            });
                       }),
                   VerticalIconButton(
-                      icon: Icons.info, title: "Trailer", onTap: () {}),
+                      icon: Icons.info,
+                      title: "Trailer",
+                      onTap: () {
+                        fetchDataVideoTrailer(movies.id.toString(), () {
+                          Navigator.pushNamed(context, AppRoutes.TrailerRoutes,
+                              arguments: {
+                                "video": video.dataVideos,
+                                "id": movies.id.toString(),
+                                "action": "trailer",
+                              });
+                        });
+                      }),
                   VerticalIconButton(
                       icon: Icons.add_box_sharp,
                       title: "Danh sách",

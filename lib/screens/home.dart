@@ -18,7 +18,6 @@ class _HomePageState extends State<HomePage> {
 
   double _scrollOffset = 0.0;
 
- 
   void iniState() {
     _scrollController = ScrollController()
       ..addListener(() {
@@ -28,7 +27,8 @@ class _HomePageState extends State<HomePage> {
       });
     super.initState();
   }
- @override
+
+  @override
   Widget build(BuildContext context) {
     Random random = new Random();
     final moviesProvider = Provider.of<MovieProvide>(context);

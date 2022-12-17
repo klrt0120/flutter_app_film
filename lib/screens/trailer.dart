@@ -2,46 +2,43 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:motchill/models/video_model.dart';
-import 'package:provider/provider.dart';
+
 import 'package:webview_flutter/webview_flutter.dart';
 import "package:flutter/material.dart";
 
-import '../models/movie_model.dart';
-import '../providers/movies_provider.dart';
-
 class WebViewVideo extends StatefulWidget {
   const WebViewVideo({super.key});
-  final String routerName = "/trailer" ; 
-  
+  final String routerName = "/trailer";
+
   @override
   WebViewVideoState createState() => WebViewVideoState();
 }
 
 class WebViewVideoState extends State<WebViewVideo> {
   late WebViewController controller;
-  
-
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-
-  });
+    WidgetsBinding.instance.addPostFrameCallback((_) {});
     // Enable virtual display.
+
     if (Platform.isAndroid) WebView.platform = AndroidWebView();
   }
 
   @override
   Widget build(BuildContext context) {
-    final List<Video> video = ModalRoute.of(context)!.settings.arguments as List<Video>;
-    if(video.isEmpty) {
-      return Scaffold(
-        body: Text("Loadind...", style: TextStyle(color: Colors.white)),
-      );
-    }
-        String html( video) {
-    return '''
+    final arg = ModalRoute.of(context)!.settings.arguments as Map;
+    print(arg);
+    // ignore: unrelated_type_equality_checks
+    final List<Video> video = arg.containsKey("video") ? arg["video"] : [];
+    print(arg.containsKey("category"));
+    final String id = arg["id"];
+    final String category =arg.containsKey("category") ? arg["category"] : "trailer";
+    final String action = arg["action"];
+
+    String html() {
+      return '''
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -75,46 +72,53 @@ class WebViewVideoState extends State<WebViewVideo> {
         <html>
             <body>
                 <iframe class="video_view"
-                    src="https://www.youtube-nocookie.com/embed/${video.key}"
-                    title="YouTube video player" frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write;
-                    encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen></iframe>
-             
+                    src=${action == "watch_now" ? 
+                    "https://2embed.org/embed/${category}?tmdb=${id}" : 
+                    "https://www.youtube-nocookie.com/embed/${video[0].key}"}
+                     frameborder="0" 
+                     allowfullscreen="allowfullscreen">
+                </iframe>
             </body>
         </html>
     </body>
 </html>
-''' ;
-  }
-  void localHTML( key_sort) async {
-    final url = Uri.dataFromString(
-      html(key_sort),
-      mimeType: 'text/html',
-      encoding: Encoding.getByName('utf-8'),
-    ).toString();
-    controller.loadUrl(url);
-  }
 
+<script >
+  alert("  ${action}") ;
+</script>
+''';
+    }
+
+    void localHTML() async {
+      final url = Uri.dataFromString(
+        html(),
+        mimeType: 'text/html',
+        encoding: Encoding.getByName('utf-8'),
+      ).toString();
+      controller.loadUrl(url);
+    }
+
+    if (video.isEmpty&& action =="trailer")  {
+      return Scaffold(
+        body: Text("Loadind...", style: TextStyle(color: Colors.white)),
+      );
+    }
     return Scaffold(
-        appBar: AppBar(
-          title: Text("${video[0].name}"),
-        ),
         body: Container(
-          width: 1500,
-          height: 16001,
-          color: Colors.red,
-          child: WebView(
-            javascriptMode: JavascriptMode.unrestricted,
-            onWebViewCreated: (controller) {
-              this.controller = controller;
-             
-                  localHTML(video[0]);
-           
-             
-            },
-          ),
-        ));
-  }
+      width: 1500,
+      height: 16001,
+      color: Colors.red,
+      child: WebView(
+        javascriptMode: JavascriptMode.unrestricted,
+        onWebViewCreated: (controller) {
+          this.controller = controller;
 
+          localHTML();
+        },
+        navigationDelegate: (NavigationRequest request) {
+          return NavigationDecision.prevent;
+        },
+      ),
+    ));
+  }
 }

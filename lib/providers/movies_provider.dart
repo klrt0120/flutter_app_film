@@ -64,7 +64,6 @@ class MovieProvide extends ChangeNotifier {
     final jsonData = await _getJsonData_Video(category, id.toString());
     final getvideoData = GetVideoModel.fromJson(jsonData);
     dataVideos = getvideoData.results!;
-    print(dataVideos[0].key) ;
     notifyListeners();
   }
 
