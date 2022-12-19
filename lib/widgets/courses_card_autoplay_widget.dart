@@ -32,7 +32,7 @@ class CardSwiper extends StatelessWidget {
         ),
         CarouselSlider(
           options: CarouselOptions(
-            height: MediaQuery.of(context).size.height * 0.33,
+            height: MediaQuery.of(context).size.height * 0.4,
             autoPlay: true,
             autoPlayAnimationDuration: Duration(
               milliseconds: 800,
@@ -55,7 +55,13 @@ class CardSwiper extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Image.network("${value.fullBackdropPath}"),
+                        FadeInImage(
+                            placeholder:
+                                AssetImage("assets/images/no-image-width.png"),
+                            image: NetworkImage(value.fullBackdropPath),
+                            fit: BoxFit.contain,
+                            width: MediaQuery.of(context).size.width * 1) , 
+                        SizedBox(height: 10,) ,
                         Text("${value.title}"),
                       ],
                     ),

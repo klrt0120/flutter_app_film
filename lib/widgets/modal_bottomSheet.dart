@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:motchill/core/routes/routes.dart';
 import 'package:motchill/models/video_model.dart';
 import 'package:motchill/providers/movies_provider.dart';
@@ -30,134 +31,190 @@ void bottomsheets(context, Movie movies, MovieProvide video) {
       ),
       builder: (BuildContext context) {
         return Container(
+          height: MediaQuery.of(context).size.height * 0.4,
           decoration: const BoxDecoration(
             color: Colors.transparent,
             borderRadius: BorderRadius.all(
               Radius.circular(5000),
             ),
           ),
-          padding: EdgeInsets.only(top: 10, left: 20, right: 20, bottom: 10),
-          height: MediaQuery.of(context).size.height * 0.4,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  GestureDetector(
-                    child: const Icon(Icons.close),
-                    onTap: () => Navigator.pop(context),
-                  ),
-                ],
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  /* Image(
-                      image: NetworkImage("${movies.fullPosterImg}"),
-                      width: MediaQuery.of(context).size.width * 0.3),*/
-                  FadeInImage(
-                      placeholder: AssetImage("assets/images/no-image.jpg"),
-                      image: NetworkImage(movies.fullPosterImg),
-                      fit: BoxFit.cover,
-                      width: MediaQuery.of(context).size.width * 0.3),
-                  const SizedBox(
-                    width: 15,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.5,
-                        child: Column(
+            children: [
+              Container(
+                padding:
+                    EdgeInsets.only(top: 10, left: 20, right: 20, bottom: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        GestureDetector(
+                          child: const Icon(Icons.close ,size: 13),
+                          onTap: () => Navigator.pop(context),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        /* Image(
+                            image: NetworkImage("${movies.fullPosterImg}"),
+                            width: MediaQuery.of(context).size.width * 0.3),*/
+                        FadeInImage(
+                            placeholder:
+                                AssetImage("assets/images/no-image.jpg"),
+                            image: NetworkImage(movies.fullPosterImg),
+                            fit: BoxFit.cover,
+                            width: MediaQuery.of(context).size.width * 0.2),
+                        const SizedBox(
+                          width: 15,
+                        ),
+                        Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Container(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.5,
-                                  child: Text(
-                                    '${movies.title}',
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 2,
-                                    style: const TextStyle(
-                                        fontFamily: "Poppins",
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w600),
+                            Container(
+                              width: MediaQuery.of(context).size.width * 0.61,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.61,
+                                        child: Text(
+                                          '${movies.title}',
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 2,
+                                          style: const TextStyle(
+                                              fontFamily: "Poppins",
+                                              fontSize: 13,
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ),
-                              ],
+                                  Text(
+                                    '(${movies.originalTitle})',
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                    style: TextStyle(
+                                        fontFamily: "Poppins",
+                                        fontSize: 11,
+                                        fontWeight: FontWeight.w300),
+                                  ),
+                                ],
+                              ),
                             ),
-                            Text(
-                              '(${movies.originalTitle})',
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 1,
-                              style: TextStyle(
-                                  fontFamily: "Poppins",
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.w300),
+                            Container(
+                              margin: EdgeInsets.only(top: 5),
+                              width: MediaQuery.of(context).size.width * 0.61,
+                              child: Text(
+                                '${!movies.overview.toString().isEmpty ? movies.overview : "Chưa có nội dung"}',
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 2,
+                                textAlign: TextAlign.justify,
+                                style: const TextStyle(
+                                    fontFamily: "Poppins",
+                                    fontSize: 10,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w300),
+                              ),
                             ),
                           ],
                         ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        VerticalIconButton(
+                            icon: Icons.play_circle,
+                            title: "Xem ngay",
+                            onTap: () {
+                              Navigator.pushNamed(
+                                  context, AppRoutes.TrailerRoutes,
+                                  arguments: {
+                                    "id": movies.id.toString(),
+                                    "action": "watch_now",
+                                    "category": "movie",
+                                  });
+                            }),
+                        VerticalIconButton(
+                            icon: Icons.play_arrow_outlined,
+                            title: "Trailer",
+                            onTap: () {
+                              fetchDataVideoTrailer(movies.id.toString(), () {
+                                Navigator.pushNamed(
+                                    context, AppRoutes.TrailerRoutes,
+                                    arguments: {
+                                      "video": video.dataVideos,
+                                      "id": movies.id.toString(),
+                                      "action": "trailer",
+                                    });
+                              });
+                            }),
+                        VerticalIconButton(
+                            icon: Icons.add_circle_outline_rounded,
+                            title: "Danh sách",
+                            onTap: () => print("Danh sách")),
+                        VerticalIconButton(
+                            icon: Icons.share,
+                            title: "Chia sẻ",
+                            onTap: () => print("Chia sẻ")),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              Spacer() ,
+              GestureDetector(
+                onTap: () {
+                  // Chuyển hướng đến chi tiết phim 
+                  print("Chi tiết ${movies.title}")  ;
+                },
+                child: Container(
+                  // height: MediaQuery.of(context).size.height * 0.05,
+                  decoration: BoxDecoration(
+                      // color: HexColor("#BB2649"),
+                      border: Border(
+                    top: BorderSide(
+                      color: HexColor("#8C8C8C"),
+                      width: 2.0,
+                    ),
+                  )),
+               
+                  padding:
+                      EdgeInsets.only(top: 10, bottom: 10, left: 8, right: 8),
+                  child: Row(
+                    children: [
+                      Icon(Icons.info_outline),
+                      SizedBox(
+                        width: 8,
                       ),
-                      Container(
-                        margin: EdgeInsets.only(top: 5),
-                        width: MediaQuery.of(context).size.width * 0.5,
-                        child: Text(
-                          '${!movies.overview.toString().isEmpty ? movies.overview : "Chưa có nội dung"}',
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 5,
-                          textAlign: TextAlign.justify,
-                          style: const TextStyle(
-                              fontFamily: "Poppins",
-                              fontSize: 10,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w300),
-                        ),
+                      Text(
+                        category == "movie"
+                            ? "Chi tiết & phim cùng thể loại"
+                            : "Chi tiết bộ phim & các tập phim",
+                        style: const TextStyle(
+                            fontFamily: "Poppins",
+                            fontSize: 13,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w300),
                       ),
+                      Spacer(),
+                      Icon(Icons.keyboard_arrow_right),
                     ],
                   ),
-                ],
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  VerticalIconButton(
-                      icon: Icons.play_circle,
-                      title: "Xem ngay",
-                      onTap: () {
-                        Navigator.pushNamed(context, AppRoutes.TrailerRoutes,
-                            arguments: {
-                              "id": movies.id.toString(),
-                              "action": "watch_now",
-                              "category": "movie",
-                            });
-                      }),
-                  VerticalIconButton(
-                      icon: Icons.info,
-                      title: "Trailer",
-                      onTap: () {
-                        fetchDataVideoTrailer(movies.id.toString(), () {
-                          Navigator.pushNamed(context, AppRoutes.TrailerRoutes,
-                              arguments: {
-                                "video": video.dataVideos,
-                                "id": movies.id.toString(),
-                                "action": "trailer",
-                              });
-                        });
-                      }),
-                  VerticalIconButton(
-                      icon: Icons.add_box_sharp,
-                      title: "Danh sách",
-                      onTap: () => print("Danh sách")),
-                ],
+                ),
               )
             ],
           ),

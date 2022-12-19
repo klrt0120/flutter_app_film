@@ -36,7 +36,7 @@ class ContentHeader extends StatelessWidget {
             print(featuredContent.title.toString());
             // videoProvider.getVideo("Povie", featuredContent.id.toString());
 
-            bottomsheets(context, featuredContent , videoProvider);
+            bottomsheets(context, featuredContent, videoProvider);
           },
           child: Container(
             height: 500.0,
@@ -87,7 +87,11 @@ class _PlayButton extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        print("Video");
+        Navigator.pushNamed(context, AppRoutes.TrailerRoutes, arguments: {
+          "id": movieId.toString(),
+          "action": "watch_now",
+          "category": "movie",
+        });
       },
       child: Container(
         padding: EdgeInsets.only(right: 10, left: 5, top: 5, bottom: 5),
