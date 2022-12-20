@@ -29,10 +29,10 @@ class WebViewVideoState extends State<WebViewVideo> {
   @override
   Widget build(BuildContext context) {
     final arg = ModalRoute.of(context)!.settings.arguments as Map;
-    print(arg);
+
     // ignore: unrelated_type_equality_checks
     final List<Video> video = arg.containsKey("video") ? arg["video"] : [];
-    print(arg.containsKey("category"));
+
     final String id = arg["id"];
     final String category =arg.containsKey("category") ? arg["category"] : "trailer";
     final String action = arg["action"];
