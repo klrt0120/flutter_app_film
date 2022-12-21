@@ -57,12 +57,14 @@ class ContentHeader extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 VerticalIconButton(
+                    color: "#ffffff",
                     icon: Icons.add,
                     title: "Danh sách",
                     onTap: () => print("Danh sách")),
                 _PlayButton(
                     category: "movie", movieId: featuredContent.id.toString()),
                 VerticalIconButton(
+                  color: "#ffffff",
                     icon: Icons.info_outline,
                     title: "Thông tin",
                     onTap: () => print("Thông tin ")),

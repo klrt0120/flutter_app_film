@@ -5,9 +5,12 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:motchill/models/detail_movie_model.dart';
 import 'package:motchill/models/movie_model.dart';
 import 'package:motchill/widgets/custom_app_bar.dart';
+import 'package:motchill/widgets/iconButton_widget.dart';
 import 'package:provider/provider.dart';
 
+import '../core/routes/routes.dart';
 import '../providers/movies_provider.dart';
+import '../utils/helper.dart';
 
 class DetailMovieView extends StatefulWidget {
   const DetailMovieView({Key? key}) : super(key: key);
@@ -21,9 +24,12 @@ class DetailMovieView extends StatefulWidget {
 class _DetailMovieViewState extends State<DetailMovieView> {
   @override
   Widget build(BuildContext context) {
-    final DetailMovieModel detail =
-        ModalRoute.of(context)!.settings.arguments as DetailMovieModel;
-    final detailFilm = Provider.of<MovieProvide>(context);
+    final arg = ModalRoute.of(context)!.settings.arguments as Map;
+    DetailMovieModel detail = arg["detail"];
+    final Movie movie = arg.containsKey("movie") ? arg["movie"] : [];
+    // final DetailMovieModel detail =
+    //     ModalRoute.of(context)!.settings.arguments as DetailMovieModel;
+    final video = Provider.of<MovieProvide>(context);
 
     return SafeArea(
         child: Scaffold(
@@ -50,7 +56,7 @@ class _DetailMovieViewState extends State<DetailMovieView> {
               ],
             )),
         buttonArrow(context),
-        scroll(context, detail),
+        scroll(context, detail, movie, video),
       ],
     )));
   }
@@ -72,7 +78,8 @@ class _DetailMovieViewState extends State<DetailMovieView> {
         ));
   }
 
-  scroll(BuildContext context, DetailMovieModel movie) {
+  scroll(BuildContext context, DetailMovieModel movieItem, Movie movie,
+      MovieProvide video) {
     return DraggableScrollableSheet(
         initialChildSize: 0.7,
         maxChildSize: 1.0,
@@ -86,50 +93,250 @@ class _DetailMovieViewState extends State<DetailMovieView> {
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(20),
                     topRight: Radius.circular(20))),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 10, bottom: 25),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+            child: SingleChildScrollView(
+              controller: scrollController,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10, bottom: 25),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(height: 5, width: 35, color: Colors.black12),
+                      ],
+                    ),
+                  ),
+                  Text(
+                    '${movieItem.title}',
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 21,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  Text(
+                    '(${movieItem.originalTitle})',
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                    style: TextStyle(
+                      fontFamily: "Poppins",
+                      fontSize: 15,
+                      fontWeight: FontWeight.w300,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Row(
                     children: [
-                      Container(height: 5, width: 35, color: Colors.black12),
+                      Text(
+                        '${movieItem.releaseYear}  ',
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                        style: TextStyle(
+                          fontFamily: "Poppins",
+                          fontSize: 15,
+                          fontWeight: FontWeight.w300,
+                          color: Colors.grey,
+                        ),
+                      ),
+                      Container(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 13, vertical: 3),
+                        decoration: BoxDecoration(
+                            color: Colors.greenAccent,
+                            borderRadius: BorderRadius.all(Radius.circular(8))),
+                        child: Text(
+                          '${movieItem.isadult}',
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                          style: TextStyle(
+                            fontFamily: "Poppins",
+                            fontSize: 15,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        '${movieItem.ConvertRunTime}  ',
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                        style: TextStyle(
+                          fontFamily: "Poppins",
+                          fontSize: 15,
+                          fontWeight: FontWeight.w300,
+                          color: Colors.grey,
+                        ),
+                      ),
                     ],
                   ),
-                ),
-                Text(
-                  '${movie.title}',
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 21,
-                    fontWeight: FontWeight.w700,
+                  const SizedBox(
+                    height: 5,
                   ),
-                ),
-                Text(
-                  '(${movie.originalTitle})',
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                  style: TextStyle(
-                    fontFamily: "Poppins",
-                    fontSize: 15,
-                    fontWeight: FontWeight.w300,
-                    color: Colors.grey,
+                  Row(
+                    children: [
+                      ...movieItem.genres!.asMap().entries.map((e) {
+                        int idx = e.key;
+                        Genre val = e.value;
+                        if (idx == 0) {
+                          return Text(
+                            '${val.name!.substring(4, val.name!.length)}  ',
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                            style: const TextStyle(
+                              fontFamily: "Poppins",
+                              fontSize: 13,
+                              fontWeight: FontWeight.w300,
+                              color: Colors.grey,
+                            ),
+                          );
+                        }
+                        return Text(
+                          '- ${val.name!.substring(4, val.name!.length)}  ',
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                          style: const TextStyle(
+                            fontFamily: "Poppins",
+                            fontSize: 13,
+                            fontWeight: FontWeight.w300,
+                            color: Colors.grey,
+                          ),
+                        );
+                      }).toList()
+                    ],
                   ),
-                ),
-                _button(context, "Xem ngay", () => print("Xem ngay"),
-                    Icons.play_arrow_outlined),
-                    SizedBox(height: 15,) ,
-                _button(context, "Xem trailer", () => print("Xem trailer"),
-                    Icons.play_circle_outline_outlined)
-              ],
+                  SizedBox(
+                    height: 15,
+                  ),
+                  _button(context, "Xem ngay", () {
+                    Navigator.pushNamed(context, AppRoutes.TrailerRoutes,
+                        arguments: {
+                          "id": movie.id.toString(),
+                          "action": "watch_now",
+                          "category": "movie",
+                        });
+                  }, Icons.play_arrow_outlined, "#BB2649"),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  _button(context, "Xem trailer", () {
+                    fetchDataVideoTrailer("movie", movie.id.toString(), () {
+                      Navigator.pushNamed(context, AppRoutes.TrailerRoutes,
+                          arguments: {
+                            "video": video.dataVideos,
+                            "id": movie.id.toString(),
+                            "action": "trailer",
+                          });
+                    }, video);
+                  }, Icons.play_circle_outline_outlined, "#000"),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                    'NỘI DUNG PHIM',
+                    textAlign: TextAlign.justify,
+                    style: const TextStyle(
+                        // fontFamily: "Poppins",
+                        fontSize: 20,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w600),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    '${!movie.overview.toString().isEmpty ? movie.overview : "Chưa có nội dung"}',
+                    textAlign: TextAlign.justify,
+                    style: const TextStyle(
+                        fontFamily: "Poppins",
+                        fontSize: 16,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w300),
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Row(
+                    children: [
+                      VerticalIconButton(
+                          color: "#000000",
+                          icon: Icons.add_box_outlined,
+                          title: "Danh sách",
+                          onTap: () => print("Danh sách")),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      VerticalIconButton(
+                          color: "#000000",
+                          icon: Icons.share,
+                          title: "Chia sẻ",
+                          onTap: () => print("Chia sẻ")),
+                    ],
+                  ),
+                  Container(
+                      height: 400,
+                      child: CustomScrollView(
+                        primary: false,
+                        slivers: <Widget>[
+                          SliverPadding(
+                            padding: const EdgeInsets.all(0),
+                            sliver: SliverGrid.count(
+                              crossAxisSpacing: 10,
+                              mainAxisSpacing: 10,
+                              crossAxisCount: 3,
+                              children: <Widget>[
+                                Container(
+                                  padding: const EdgeInsets.all(8),
+                                  color: Colors.green[100],
+                                  child: const Text(
+                                      "He'd have you all unravel at the"),
+                                ),
+                                Container(
+                                  padding: const EdgeInsets.all(8),
+                                  color: Colors.green[200],
+                                  child: const Text('Heed not the rabble'),
+                                ),
+                                Container(
+                                  padding: const EdgeInsets.all(8),
+                                  color: Colors.green[300],
+                                  child: const Text('Sound of screams but the'),
+                                ),
+                                Container(
+                                  padding: const EdgeInsets.all(8),
+                                  color: Colors.green[400],
+                                  child: const Text('Who scream'),
+                                ),
+                                Container(
+                                  padding: const EdgeInsets.all(8),
+                                  color: Colors.green[500],
+                                  child: const Text('Revolution is coming...'),
+                                ),
+                                Container(
+                                  padding: const EdgeInsets.all(8),
+                                  color: Colors.green[600],
+                                  child: const Text('Revolution, they...'),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ))
+                ],
+              ),
             ),
           );
         });
   }
 
-  _button(BuildContext context, String name, Function ontap, IconData icon) {
+  _button(BuildContext context, String name, Function ontap, IconData icon,
+      String color) {
     return GestureDetector(
       onTap: () {
         ontap();
@@ -138,18 +345,26 @@ class _DetailMovieViewState extends State<DetailMovieView> {
         width: MediaQuery.of(context).size.width * 0.9,
         height: 62,
         decoration: BoxDecoration(
-            color: HexColor("#BB2649"),
+            color: HexColor("${color}"),
             borderRadius: BorderRadius.all(Radius.circular(8))),
         margin: EdgeInsets.only(right: 5, left: 5),
         child: Center(
             child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, size: 30,),
-            SizedBox(width: 5,) ,
+            Icon(
+              icon,
+              size: 30,
+            ),
+            const SizedBox(
+              width: 5,
+            ),
             Text(
               "${name}",
-              style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: HexColor("#F8E9ED")),
+              style: TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.bold,
+                  color: HexColor("#F8E9ED")),
             ),
           ],
         )),

@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 
 import '../models/movie_model.dart';
 import '../screens/trailer.dart';
+import '../utils/helper.dart';
 
 void bottomsheets(context, Movie movies, MovieProvide video) {
   // Hàm fetch data film theo id
@@ -16,22 +17,21 @@ void bottomsheets(context, Movie movies, MovieProvide video) {
   final String action = "watch_now";
   final String category = "movie";
 
-
   // Phải xử lý bottom với tv shows ...
-  Future<void> fetchDataVideoTrailer(String id, Function router_func) async {
-    print('Dữ liệu đang tải...');
+  // Future<void> fetchDataVideoTrailer(String id, Function router_func) async {
+  //   print('Dữ liệu đang tải...');
 
-    var respon = await video.getVideo(category, id);
-    print("respon ${respon}");
-    router_func();
-  }
+  //   var respon = await video.getVideo(category, id);
+  //   print("respon ${respon}");
+  //   router_func();
+  // }
 
-  Future<void> fetchDetailFilm(
-      String category, String id, Function router_func) async {
-    print('Dữ liệu đang tải...');
-    await video.getDetail(category, id);
-    router_func();
-  }
+  // Future<void> fetchDetailFilm(
+  //     String category, String id, Function router_func) async {
+  //   print('Dữ liệu đang tải...');
+  //   await video.getDetail(category, id);
+  //   router_func();
+  // }
 
   showModalBottomSheet<void>(
       context: context,
@@ -195,6 +195,7 @@ void bottomsheets(context, Movie movies, MovieProvide video) {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         VerticalIconButton(
+                          color: "#ffffff",
                             icon: Icons.play_circle,
                             title: "Xem ngay",
                             onTap: () {
@@ -207,10 +208,12 @@ void bottomsheets(context, Movie movies, MovieProvide video) {
                                   });
                             }),
                         VerticalIconButton(
+                            color: "#ffffff",
                             icon: Icons.play_arrow_outlined,
                             title: "Trailer",
                             onTap: () {
-                              fetchDataVideoTrailer(movies.id.toString(), () {
+                              fetchDataVideoTrailer(
+                                  "movie", movies.id.toString(), () {
                                 Navigator.pushNamed(
                                     context, AppRoutes.TrailerRoutes,
                                     arguments: {
@@ -218,13 +221,15 @@ void bottomsheets(context, Movie movies, MovieProvide video) {
                                       "id": movies.id.toString(),
                                       "action": "trailer",
                                     });
-                              });
+                              }, video);
                             }),
                         VerticalIconButton(
+                            color: "#ffffff",
                             icon: Icons.add_circle_outline_rounded,
                             title: "Danh sách",
                             onTap: () => print("Danh sách")),
                         VerticalIconButton(
+                            color: "#ffffff",
                             icon: Icons.share,
                             title: "Chia sẻ",
                             onTap: () => print("Chia sẻ")),
@@ -236,8 +241,11 @@ void bottomsheets(context, Movie movies, MovieProvide video) {
                       fetchDetailFilm("movie", movies.id.toString(), () {
                         Navigator.pushNamed(
                             context, AppRoutes.DetailMovieRoutes,
-                            arguments: video.dataDetail );
-                      });
+                            arguments: {
+                              "detail": video.dataDetail,
+                              "movie": movies,
+                            });
+                      }, video);
 
                       print("Chi tiết ${movies.title}");
                     },

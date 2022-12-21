@@ -109,6 +109,30 @@ class DetailMovieModel {
     }
     return 'https://i.stack.imgur.com/GNhxO.png';
   }
+
+  get releaseYear {
+    if (releaseDate != null) {
+      return releaseDate.toString().substring(0, 4);
+    }
+    return "";
+  }
+
+  get isadult {
+    if (adult == true) {
+      return "18+";
+    }
+    return "18+";
+  }
+
+  get ConvertRunTime {
+    if (runtime != null) {
+      int min = runtime! % 60;
+      int hour = (runtime! / 60).floor();
+      String hours = hour.toString().length <= 1 ? "0$hour giờ" : "$hour giờ";
+      String minute = min.toString().length <= 1 ? "0$min phút" : "$min phút";
+      return "$hours : $minute";
+    }
+  }
 }
 
 class Genre {
