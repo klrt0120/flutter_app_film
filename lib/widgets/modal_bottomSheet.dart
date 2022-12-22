@@ -127,7 +127,7 @@ void bottomsheets(context, Movie movies, MovieProvide video) {
                               child: Text(
                                 '${!movies.overview.toString().isEmpty ? movies.overview : "Chưa có nội dung"}',
                                 overflow: TextOverflow.ellipsis,
-                                maxLines: 6,
+                                maxLines: 5,
                                 textAlign: TextAlign.justify,
                                 style: const TextStyle(
                                     fontFamily: "Poppins",

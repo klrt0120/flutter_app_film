@@ -12,6 +12,7 @@ import 'package:provider/provider.dart';
 import '../core/routes/routes.dart';
 import '../providers/movies_provider.dart';
 import '../utils/helper.dart';
+import '../widgets/buttonBack_widget.dart';
 
 class DetailMovieView extends StatefulWidget {
   const DetailMovieView({Key? key}) : super(key: key);
@@ -59,7 +60,8 @@ class _DetailMovieViewState extends State<DetailMovieView> {
                 )
               ],
             )),
-        buttonArrow(context),
+        ButtonBack(),
+        // buttonArrow(context),
         scroll(context, detail, movie, video),
       ],
     )));

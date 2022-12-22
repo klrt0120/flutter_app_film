@@ -79,4 +79,6 @@ class Movie {
     voteAverage: json["vote_average"].toDouble(),
     voteCount: json["vote_count"],
   );
+
+ 
 }

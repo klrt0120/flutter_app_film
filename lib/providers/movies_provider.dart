@@ -6,6 +6,7 @@ import 'package:motchill/models/genres_movie_model.dart';
 import 'package:motchill/models/movie_model.dart';
 import 'package:motchill/models/now_playing_model.dart';
 import 'package:http/http.dart' as http;
+import 'package:motchill/models/search_model.dart';
 
 import '../models/get_video_model.dart';
 import '../models/video_model.dart';
@@ -125,6 +126,27 @@ class MovieProvide extends ChangeNotifier {
 
     // onDisplayMoviesGenres = getMovieData.results!;
     notifyListeners();
+  }
+
+  Future<List<Movie>> searchMovie(String query) async {
+    int page = 10;
+    List<Movie> searchResult = [];
+    for (int i = 1; i <= page; i++) {
+      final url = Uri.https(_baseUrl, '3/search/movie', {
+        'api_key': _apiKey,
+        'language': _language,
+        'page': i.toString(),
+        'query': query,
+      });
+      final response = await http.get(url);
+      final searchResponse = SearchModel.fromJson(response.body);
+      //  searchResult = searchResponse.results as Movie ;
+      searchResult = [
+        ...searchResult,
+        ...searchResponse.results,
+      ];
+    }
+    return searchResult;
   }
 
   MovieProvide() {

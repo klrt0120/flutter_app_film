@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:motchill/core/routes/routes.dart';
 import 'package:motchill/widgets/appbarButton_widget.dart';
 
 class CustomAppBar extends StatelessWidget {
@@ -32,7 +33,12 @@ class CustomAppBar extends StatelessWidget {
                   AppBarButton(
                       title: "TV Shows", onTap: () => print("tv shows")),*/
                     Spacer(),
-                    Icon(Icons.search_sharp),
+                    GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(context, AppRoutes.SearchRoutes,
+                              arguments: "a");
+                        },
+                        child: Icon(Icons.search_sharp)),
                     SizedBox(
                       width: 10,
                     ),
