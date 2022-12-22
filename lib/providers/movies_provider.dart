@@ -80,32 +80,50 @@ class MovieProvide extends ChangeNotifier {
   }
 
   getDetail(String category, String? id) async {
-    
     final jsonData = await _getJsonData_Detail(category, id.toString());
     final getvideoData = DetailMovieModel.fromJson(jsonData);
     dataDetail = getvideoData;
     notifyListeners();
   }
 
-  Future<String> _getJsonData_Genres(String category, String genres,
-      [int page = 1]) async {
-    final url = Uri.https(_baseUrl, '3/movie', {
+  Future<String> _getJsonData_Genres(
+      String category, String genres, int page) async {
+    // final url = Uri.https(_baseUrl, '3/movie', {
+    //   'api_key': _apiKey,
+    //   'with_genres': genres,
+    //   'language': "vi",
+    // });
+    final url = Uri.https(_baseUrl, '3/discover/movie', {
       'api_key': _apiKey,
       'with_genres': genres,
       'language': "vi",
       'page': '$page',
     });
+    print(url);
+
 // https://api.themoviedb.org/3/movie/982620?api_key=d8f8edbbdc27ab9a16942772f29aa16c&language=vi
     final response = await http.get(url);
     return response.body;
   }
 
   getGenresFilm(String category, String? genres) async {
+    print("-----------------$genres");
     onDisplayMoviesGenres.clear();
+    int pageFetch = 3;
+    for (int i = 1; i <= pageFetch; i++) {
+      final jsonData =
+          await _getJsonData_Genres(category, genres.toString(), i);
+      final getMovieData = GenresMovieModel.fromJson(jsonData);
+      onDisplayMoviesGenres = [
+        ...onDisplayMoviesGenres,
+        ...getMovieData.results!,
+      ];
+    }
     // ${baseURL}/discover/${category}?api_key=${api_key}&with_genres=${genres}&language=vi
-    final jsonData = await _getJsonData_Genres(category, genres.toString());
-    final getMovieData = GenresMovieModel.fromJson(jsonData);
-    onDisplayMoviesGenres = getMovieData.results!;
+
+    // final jsonData2 = await _getJsonData_Genres(category, genres.toString(), 2);
+
+    // onDisplayMoviesGenres = getMovieData.results!;
     notifyListeners();
   }
 

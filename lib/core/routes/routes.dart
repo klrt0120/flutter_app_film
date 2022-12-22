@@ -7,12 +7,11 @@ import '../../screens/trailer.dart';
 
 class AppRoutes {
   static const String LoginRoute = "/login";
-
   static const String SignupRoutes = "/signup";
-
   static const String HomeRoutes = "/";
   static const String DetailMovieRoutes = "/detail_movie";
   static const String TrailerRoutes = "/trailer";
+  static const String SearchRoutes = "/search" ; 
   static final routes = {
     LoginRoute: (context) => LoginView(),
     HomeRoutes: (context) => HomePage(),

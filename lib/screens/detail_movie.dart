@@ -6,6 +6,7 @@ import 'package:motchill/models/detail_movie_model.dart';
 import 'package:motchill/models/movie_model.dart';
 import 'package:motchill/widgets/custom_app_bar.dart';
 import 'package:motchill/widgets/iconButton_widget.dart';
+import 'package:motchill/widgets/movie_genres_widget.dart';
 import 'package:provider/provider.dart';
 
 import '../core/routes/routes.dart';
@@ -22,8 +23,11 @@ class DetailMovieView extends StatefulWidget {
 }
 
 class _DetailMovieViewState extends State<DetailMovieView> {
+  late String genres = "";
+
   @override
   Widget build(BuildContext context) {
+    // String genres ="" ;
     final arg = ModalRoute.of(context)!.settings.arguments as Map;
     DetailMovieModel detail = arg["detail"];
     final Movie movie = arg.containsKey("movie") ? arg["movie"] : [];
@@ -186,6 +190,7 @@ class _DetailMovieViewState extends State<DetailMovieView> {
                         int idx = e.key;
                         Genre val = e.value;
                         if (idx == 0) {
+                          genres = val.id.toString();
                           return Text(
                             '${val.name!.substring(4, val.name!.length)}  ',
                             overflow: TextOverflow.ellipsis,
@@ -280,54 +285,35 @@ class _DetailMovieViewState extends State<DetailMovieView> {
                           onTap: () => print("Chia sẻ")),
                     ],
                   ),
+                  SizedBox(
+                    height: 15,
+                  ),
                   Container(
-                      height: 400,
-                      child: CustomScrollView(
-                        primary: false,
-                        slivers: <Widget>[
-                          SliverPadding(
-                            padding: const EdgeInsets.all(0),
-                            sliver: SliverGrid.count(
-                              crossAxisSpacing: 10,
-                              mainAxisSpacing: 10,
-                              crossAxisCount: 3,
-                              children: <Widget>[
-                                Container(
-                                  padding: const EdgeInsets.all(8),
-                                  color: Colors.green[100],
-                                  child: const Text(
-                                      "He'd have you all unravel at the"),
-                                ),
-                                Container(
-                                  padding: const EdgeInsets.all(8),
-                                  color: Colors.green[200],
-                                  child: const Text('Heed not the rabble'),
-                                ),
-                                Container(
-                                  padding: const EdgeInsets.all(8),
-                                  color: Colors.green[300],
-                                  child: const Text('Sound of screams but the'),
-                                ),
-                                Container(
-                                  padding: const EdgeInsets.all(8),
-                                  color: Colors.green[400],
-                                  child: const Text('Who scream'),
-                                ),
-                                Container(
-                                  padding: const EdgeInsets.all(8),
-                                  color: Colors.green[500],
-                                  child: const Text('Revolution is coming...'),
-                                ),
-                                Container(
-                                  padding: const EdgeInsets.all(8),
-                                  color: Colors.green[600],
-                                  child: const Text('Revolution, they...'),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ))
+                    padding: EdgeInsets.only(top: 10),
+                    decoration: BoxDecoration(
+                      border: Border(
+                        top: BorderSide(
+                          color: HexColor("#BB2649"),
+                          width: 4.0,
+                        ),
+                      ),
+                    ),
+                    child: const Text(
+                      'PHIM CÙNG THỂ LOẠI',
+                      textAlign: TextAlign.justify,
+                      style: TextStyle(
+                          // fontFamily: "Poppins",
+                          fontSize: 20,
+                          color: Colors.black,
+                          fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  MovieGenres(
+                      getMovieGenres: () =>
+                          video.getGenresFilm("movie", genres))
                 ],
               ),
             ),
