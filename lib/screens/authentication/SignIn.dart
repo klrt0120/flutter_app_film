@@ -26,7 +26,7 @@ class _LoginViewState extends State<LoginView> {
 
           GestureDetector(
             onTap: () {
-              Navigator.pushNamed(context, AppRoutes.HomeRoutes, arguments: "a") ;
+              Navigator.pushNamed(context, AppRoutes.SplashRoutes, arguments: "a") ;
             },
             child: Container(
               child: Text("Login"),

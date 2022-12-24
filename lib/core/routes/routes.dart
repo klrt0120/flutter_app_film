@@ -3,6 +3,7 @@ import 'package:motchill/screens/detail_movie.dart';
 
 import 'package:motchill/screens/home.dart';
 import 'package:motchill/screens/search.dart';
+import 'package:motchill/screens/splash.dart';
 
 import '../../screens/authentication/signup.dart';
 import '../../screens/trailer.dart';
@@ -14,6 +15,7 @@ class AppRoutes {
   static const String DetailMovieRoutes = "/detail_movie";
   static const String TrailerRoutes = "/trailer";
   static const String SearchRoutes = "/search";
+  static const String SplashRoutes ="/splash";
   static final routes = {
     LoginRoute: (context) => LoginView(),
     HomeRoutes: (context) => HomePage(),
@@ -21,6 +23,7 @@ class AppRoutes {
     TrailerRoutes: (context) => WebViewVideo(),
     SearchRoutes: (context) => SearchScreen(),
     SignupRoutes:(context) => SignupView() ,
+    SplashRoutes: (context) => SplashScreen(),
 
 /*    SignupRoutes: (context) => SignupView(),
     HomeRoutes: (context) => HomeView(),*/
