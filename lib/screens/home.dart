@@ -36,7 +36,7 @@ class _HomePageState extends State<HomePage> {
     final Size screenSize = MediaQuery.of(context).size;
     if (dataMovie.isEmpty) {
       return const Scaffold(
-        body: Text("Loadind..."),
+        body: Text("Loading..."),
       );
     }
     return Scaffold(
