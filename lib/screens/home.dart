@@ -36,7 +36,7 @@ class _HomePageState extends State<HomePage> {
     final Size screenSize = MediaQuery.of(context).size;
     if (dataMovie.isEmpty) {
       return const Scaffold(
-        body: Text("Loadind..."),
+        body: Text("Loading..."),
       );
     }
     return Scaffold(
@@ -60,7 +60,7 @@ class _HomePageState extends State<HomePage> {
             // tạo cuộn
             SliverToBoxAdapter(
                 child: Column(
-              children: [
+                children: [
                 ContentHeader(
                     featuredContent:
                         dataMovie[random.nextInt(dataMovie.length)]),
