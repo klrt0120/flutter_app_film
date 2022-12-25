@@ -61,10 +61,10 @@ class _HomePageState extends State<HomePage> {
             SliverToBoxAdapter(
                 child: Column(
                 children: [
-                ContentHeader(
+                ContentHeader(                                        // content_Header_widget
                     featuredContent:
                         dataMovie[random.nextInt(dataMovie.length)]),
-                CardSwiper(
+                CardSwiper(                                           // courses_card_autoplay_Widget
                   movies: moviesProvider.onDisplayMovies,
                   title: "Phim mới cập nhập",
                 ),

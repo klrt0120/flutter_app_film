@@ -237,7 +237,7 @@ void bottomsheets(context, Movie movies, MovieProvide video) {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () {
+                    onTap: () {                   // navigator to detail_movie.dart
                       fetchDetailFilm("movie", movies.id.toString(), () {
                         Navigator.pushNamed(
                             context, AppRoutes.DetailMovieRoutes,
