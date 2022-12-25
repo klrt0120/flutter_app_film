@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:motchill/core/routes/routes.dart';
 import 'package:motchill/widgets/appbarButton_widget.dart';
 
-class CustomAppBar extends StatelessWidget {
-  const CustomAppBar({Key? key, this.scrollOffset = 0.0}) : super(key: key);
-  final double scrollOffset;
+import '../providers/authenciation_provider.dart';
 
+class CustomAppBar extends StatelessWidget {
+  CustomAppBar({Key? key, this.scrollOffset = 0.0}) : super(key: key);
+  final double scrollOffset;
+  final _supabaseClient = AuthenciationNotifier();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -44,9 +46,12 @@ class CustomAppBar extends StatelessWidget {
                     ),
                     GestureDetector(
                       onTap: () {
-                        Navigator.pushNamed(
-                            context, "${AppRoutes.ProfileRoutes}",
-                            arguments: "a");
+                        () async {
+                          await _supabaseClient.getProfile();
+                          Navigator.pushNamed(
+                              context, "${AppRoutes.ProfileRoutes}",
+                              arguments: "a");
+                        }();
                       },
                       child: CircleAvatar(
                         child: CircleAvatar(

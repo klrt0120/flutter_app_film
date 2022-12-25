@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:motchill/core/routes/routes.dart';
+import 'package:motchill/screens/authentication/SignIn.dart';
 import 'package:motchill/screens/home.dart';
 import 'package:motchill/screens/profile.dart';
 
@@ -53,5 +54,26 @@ class AuthenciationNotifier extends ChangeNotifier {
           SnackBar(content: Text("Vui lòng kiểm tra lại email và tài khoản !"));
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
+  }
+
+  Future<void> SignOut(context) async {
+    try {
+      await SupabaseSetting.supabaseClient.auth.signOut();
+      var snackBar = SnackBar(content: Text("Đã đăng xuất !"));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => LoginView()));
+    } catch (e) {}
+
+    return;
+  }
+
+  Future<void> getProfile() async {
+    try {
+      final userId = SupabaseSetting.supabaseClient.auth.currentUser!.id;
+      final data =
+          await SupabaseSetting.supabaseClient.from('users').select("username");
+      print(data);
+    } catch (error) {}
   }
 }
