@@ -6,7 +6,7 @@ import 'authenciation_provider.dart';
 
 class AppProvider {
   static List<SingleChildWidget> providers = [
-    ChangeNotifierProvider(create: (_) => AuthenciationProvider()) ,
+    ChangeNotifierProvider(create: (_) => AuthenciationNotifier()),
     ChangeNotifierProvider(create: (_) => MovieProvide())
   ];
 }

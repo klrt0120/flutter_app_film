@@ -26,7 +26,7 @@ class MotChill extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: AppRoutes.LoginRoute ,
+      initialRoute: AppRoutes.SplashRoutes ,
       color: HexColor("#B1B6B7"),
       theme: ThemeData.dark(),
       routes: AppRoutes.routes,
