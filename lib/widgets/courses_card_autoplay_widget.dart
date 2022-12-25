@@ -47,7 +47,7 @@ class CardSwiper extends StatelessWidget {
               builder: (BuildContext context) {
                 return GestureDetector(
                   onTap: () => {
-                     bottomsheets(context, movies[index] , videoProvider)
+                     bottomsheets(context, movies[index] , videoProvider)   //modal_bottomSheet_widget
                   } ,
                   child: Container(
                     height: MediaQuery.of(context).size.height * 1,
