@@ -42,10 +42,16 @@ class CustomAppBar extends StatelessWidget {
                     SizedBox(
                       width: 10,
                     ),
-                    CircleAvatar(
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pushReplacementNamed(
+                            context, "${AppRoutes.ProfileRoutes}");
+                      },
                       child: CircleAvatar(
-                          backgroundImage: NetworkImage(
-                              "https://picsum.photos/seed/picsum/200/300")),
+                        child: CircleAvatar(
+                            backgroundImage: NetworkImage(
+                                "https://picsum.photos/seed/picsum/200/300")),
+                      ),
                     )
                   ],
                 ),

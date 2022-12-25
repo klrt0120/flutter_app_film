@@ -18,8 +18,8 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     final session = SupabaseSetting.supabaseClient.auth.currentSession;
-    
-    Timer(Duration(seconds: 10), () {
+    print(session) ;
+    Timer(Duration(seconds: 2), () {
       if (session != null) {
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => HomePage()));
