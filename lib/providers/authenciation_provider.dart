@@ -18,12 +18,12 @@ class AuthenciationNotifier extends ChangeNotifier {
     try {
       final result = await SupabaseSetting.supabaseClient.auth
           .signInWithPassword(email: email, password: password!);
-      print(result.hashCode);
+
       if (result.session != null) {
-     
-        print("Đăng nhập thành công ");
-        print(result.user);
-          Navigator.pushReplacement(
+        var snackBar = SnackBar(content: Text("Đăng nhập thành công !"));
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+        Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => HomePage()));
       } else {}
     } catch (e) {
@@ -43,10 +43,15 @@ class AuthenciationNotifier extends ChangeNotifier {
           email: email, password: password!, data: {"username": username});
       if (result.session != null) {
         print("Đăng ký thành công ");
+        var snackBar = SnackBar(content: Text("Xin chào, ${username}"));
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
         Navigator.pushReplacementNamed(context, '${AppRoutes.LoginRoute}');
       }
     } catch (e) {
       print("Đăng ký thất bại");
+      var snackBar =
+          SnackBar(content: Text("Vui lòng kiểm tra lại email và tài khoản !"));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
 }

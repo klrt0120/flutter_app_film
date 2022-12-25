@@ -133,7 +133,9 @@ class _SignupViewState extends State<SignupView> {
                                 validator: (value) {
                                   if (value == null || value.isEmpty)
                                     return "Mật không được để trống !";
-                                  {
+                                  else if (value.toString().length < 8) {
+                                    return "Mật khẩu phải có ít nhất 8 ký tự!";
+                                  } else {
                                     return null;
                                   }
                                 },
@@ -168,15 +170,15 @@ class _SignupViewState extends State<SignupView> {
                             padding: const EdgeInsets.only(left: 16),
                             child: Center(
                               child: TextFormField(
-                                // validator: (value) {
-                                //   if (value == null || value.isEmpty)
-                                //     return "Xác nhận mật khẩu";
-                                //   else if (value != passwordController.text) {
-                                //     return "Email không hợp lệ!";
-                                //   } else {
-                                //     return null;
-                                //   }
-                                // },
+                                validator: (value) {
+                                  if (value == null || value.isEmpty)
+                                    return "Vui lòng nhập lại mật khẩu !";
+                                  else if (value != passwordController.text) {
+                                    return "Mật khẩu không khớp !";
+                                  } else {
+                                    return null;
+                                  }
+                                },
                                 controller: confirmpasswordController,
                                 obscureText: _isVisible ? false : true,
                                 decoration: InputDecoration(
@@ -206,11 +208,7 @@ class _SignupViewState extends State<SignupView> {
                           child: ElevatedButton(
                               onPressed: () {
                                 if (_formKey.currentState!.validate()) {
-                                  var snackBar = SnackBar(
-                                      content: Text(
-                                          "Xin chào, ${emailController.text}"));
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(snackBar);
+                                 
                                   _supabaseClient.SignupUser(
                                     context,
                                     email: emailController.text,
@@ -241,7 +239,7 @@ class _SignupViewState extends State<SignupView> {
                           ),
                           children: [
                             TextSpan(
-                                text: ' Đăng nhập',
+                                text: 'Đăng nhập',
                                 style:
                                     TextStyle(color: kRedColor, fontSize: 18),
                                 recognizer: TapGestureRecognizer()

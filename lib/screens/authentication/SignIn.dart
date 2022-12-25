@@ -155,11 +155,7 @@ class _LoginViewState extends State<LoginView> {
                           child: ElevatedButton(
                               onPressed: () {
                                 if (_formKey.currentState!.validate()) {
-                                  var snackBar = SnackBar(
-                                      content: Text(
-                                          "Xin chào, ${emailController.text}"));
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(snackBar);
+                                 
                                   _supabaseClient.SigninnUser(context,
                                       email: emailController.text,
                                       password: passwordController.text);
