@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:motchill/core/routes/routes.dart';
+import 'package:motchill/screens/home.dart';
 import 'package:motchill/screens/profile.dart';
 
 import '../core/supabase/supabase.dart';
@@ -19,10 +20,11 @@ class AuthenciationNotifier extends ChangeNotifier {
           .signInWithPassword(email: email, password: password!);
       print(result.hashCode);
       if (result.session != null) {
+     
         print("Đăng nhập thành công ");
         print(result.user);
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => ProfileScreen()));
+          Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => HomePage()));
       } else {}
     } catch (e) {
       print("Đăng nhập thất bại");

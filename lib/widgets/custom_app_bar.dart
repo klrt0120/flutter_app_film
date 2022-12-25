@@ -44,8 +44,9 @@ class CustomAppBar extends StatelessWidget {
                     ),
                     GestureDetector(
                       onTap: () {
-                        Navigator.pushReplacementNamed(
-                            context, "${AppRoutes.ProfileRoutes}");
+                        Navigator.pushNamed(
+                            context, "${AppRoutes.ProfileRoutes}",
+                            arguments: "a");
                       },
                       child: CircleAvatar(
                         child: CircleAvatar(
