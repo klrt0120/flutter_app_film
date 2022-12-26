@@ -6,6 +6,7 @@ import 'package:motchill/widgets/appbarButton_widget.dart';
 import '../providers/authenciation_provider.dart';
 
 class CustomAppBar extends StatelessWidget {
+  
   CustomAppBar({Key? key, this.scrollOffset = 0.0}) : super(key: key);
   final double scrollOffset;
   final _supabaseClient = AuthenciationNotifier();
@@ -56,10 +57,7 @@ class CustomAppBar extends StatelessWidget {
                                 "email": _supabaseClient.user['email']
                               });
                         }();
-                        // () async {
-                        //   await _supabaseClient.getProfile();
-
-                        // }();
+                       
                       },
                       child: CircleAvatar(
                         child: CircleAvatar(

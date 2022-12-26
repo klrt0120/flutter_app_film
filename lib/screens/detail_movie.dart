@@ -10,6 +10,7 @@ import 'package:motchill/widgets/movie_genres_widget.dart';
 import 'package:provider/provider.dart';
 
 import '../core/routes/routes.dart';
+import '../providers/authenciation_provider.dart';
 import '../providers/movies_provider.dart';
 import '../utils/helper.dart';
 import '../widgets/buttonBack_widget.dart';
@@ -25,6 +26,7 @@ class DetailMovieView extends StatefulWidget {
 
 class _DetailMovieViewState extends State<DetailMovieView> {
   late String genres = "";
+  final _supabaseClient = AuthenciationNotifier();
 
   @override
   Widget build(BuildContext context) {
@@ -49,14 +51,31 @@ class _DetailMovieViewState extends State<DetailMovieView> {
             top: 25,
             child: Row(
               children: [
-                Icon(Icons.search_sharp),
+                GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, AppRoutes.SearchRoutes,
+                          arguments: "a");
+                    },
+                    child: Icon(Icons.search_sharp)),
                 SizedBox(
                   width: 10,
                 ),
-                CircleAvatar(
+                GestureDetector(
+                  onTap: () {
+                    () async {
+                      await _supabaseClient.getData();
+                      Navigator.pushNamed(context, "${AppRoutes.ProfileRoutes}",
+                          arguments: {
+                            "username": _supabaseClient.user['username'],
+                            "email": _supabaseClient.user['email']
+                          });
+                    }();
+                  },
                   child: CircleAvatar(
-                      backgroundImage: NetworkImage(
-                          "https://picsum.photos/seed/picsum/200/300")),
+                    child: CircleAvatar(
+                        backgroundImage: NetworkImage(
+                            "https://picsum.photos/seed/picsum/200/300")),
+                  ),
                 )
               ],
             )),

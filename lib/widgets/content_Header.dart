@@ -64,7 +64,7 @@ class ContentHeader extends StatelessWidget {
                 _PlayButton(
                     category: "movie", movieId: featuredContent.id.toString()),
                 VerticalIconButton(
-                  color: "#ffffff",
+                    color: "#ffffff",
                     icon: Icons.info_outline,
                     title: "Thông tin",
                     onTap: () => print("Thông tin ")),

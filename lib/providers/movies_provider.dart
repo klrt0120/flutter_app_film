@@ -6,7 +6,9 @@ import 'package:motchill/models/genres_movie_model.dart';
 import 'package:motchill/models/movie_model.dart';
 import 'package:motchill/models/now_playing_model.dart';
 import 'package:http/http.dart' as http;
+import 'package:motchill/models/now_playing_movie.dart';
 import 'package:motchill/models/search_model.dart';
+import 'package:motchill/models/trending_movie_model.dart';
 
 import '../models/get_video_model.dart';
 import '../models/video_model.dart';
@@ -20,7 +22,9 @@ class MovieProvide extends ChangeNotifier {
   List<Movie> onDisplayTvShows = [];
   List<Video> dataVideos = [];
   List<Movie> onDisplayMoviesGenres = [];
+  List<Movie> onDisplayMoviesTrending = [];
   DetailMovieModel dataDetail = new DetailMovieModel();
+
   Future<String> _getJsonData(String category, String endPoint,
       [int page = 1]) async {
     final url = Uri.https(_baseUrl, '3/${category}/${endPoint}', {
@@ -33,6 +37,7 @@ class MovieProvide extends ChangeNotifier {
     return response.body;
   }
 
+//https://api.themoviedb.org/3/discover/movie?api_key=d8f8edbbdc27ab9a16942772f29aa16c&language=en-US&page=1
   Future<String> _getJsonData_Discover(String category, [int page = 1]) async {
     final url = Uri.https(_baseUrl, '3/discover/${category}', {
       'api_key': _apiKey,
@@ -100,7 +105,6 @@ class MovieProvide extends ChangeNotifier {
       'language': "vi",
       'page': '$page',
     });
-    print(url);
 
 // https://api.themoviedb.org/3/movie/982620?api_key=d8f8edbbdc27ab9a16942772f29aa16c&language=vi
     final response = await http.get(url);
@@ -147,6 +151,65 @@ class MovieProvide extends ChangeNotifier {
       ];
     }
     return searchResult;
+  }
+
+  Future<String> _getJsonData_Trending(int page) async {
+    final url = Uri.https(_baseUrl, "3/trending/movie/day", {
+      'api_key': _apiKey,
+      'language': "vi",
+      'page': '$page',
+    });
+    final response = await http.get(url);
+    print(url);
+    return response.body;
+  }
+
+  Future<List<Movie>?> getTrendingMovies() async {
+    List<Movie> trendingResult = [];
+    int page = 3;
+    for (int i = 1; i <= page; i++) {
+      final jsonData = await _getJsonData_Trending(i);
+      final trendingResponse = TrendingModel.fromJson(jsonData);
+
+      trendingResult = [...trendingResult, ...?trendingResponse.results];
+    }
+    return trendingResult;
+  }
+
+  getGenresFilmMovie(String category, String? genres) async {
+    List<Movie> genresResult = [];
+    int pageFetch = 10;
+    for (int i = 1; i <= pageFetch; i++) {
+      final jsonData =
+          await _getJsonData_Genres(category, genres.toString(), i);
+      final getMovieData = GenresMovieModel.fromJson(jsonData);
+      genresResult = [
+        ...genresResult,
+        ...getMovieData.results!,
+      ];
+      return genresResult;
+    }
+  }
+
+// https://api.themoviedb.org/3/movie/upcoming?api_key=d8f8edbbdc27ab9a16942772f29aa16c&language=vi&page=1
+  Future<List<Movie>> getUpcoming() async {
+    int page = 10;
+    List<Movie> upcomingResult = [];
+    for (int i = 1; i <= page; i++) {
+      final url = Uri.https(_baseUrl, '3/movie/upcoming', {
+        'api_key': _apiKey,
+        'language': _language,
+        'page': i.toString(),
+      });
+      final response = await http.get(url);
+      final upcomingResponse = UpcomingModel.fromJson(response.body);
+      //  searchResult = searchResponse.results as Movie ;
+      upcomingResult = [
+        ...upcomingResult,
+        ...?upcomingResponse.results,
+      ];
+    }
+    return upcomingResult;
   }
 
   MovieProvide() {

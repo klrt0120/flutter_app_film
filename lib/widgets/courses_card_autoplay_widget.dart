@@ -16,62 +16,67 @@ class CardSwiper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
      final videoProvider = Provider.of<MovieProvide>(context);
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: EdgeInsets.only(left: 15),
-          child: Text(
-            "${title}",
-            style: TextStyle(
-                color: HexColor("#da966e"),
-                fontSize: 18,
-                fontFamily: "Poppins",
-                fontWeight: FontWeight.w700),
-          ),
-        ),
-        CarouselSlider(
-          options: CarouselOptions(
-            height: MediaQuery.of(context).size.height * 0.4,
-            autoPlay: true,
-            autoPlayAnimationDuration: Duration(
-              milliseconds: 800,
+    return Container(
+      // height: 500,
+      
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: EdgeInsets.only(left: 15),
+            child: Text(
+              "${title}",
+              style: TextStyle(
+                  color: HexColor("#da966e"),
+                  fontSize: 18,
+                  fontFamily: "Poppins",
+                  fontWeight: FontWeight.w700),
             ),
-            enlargeCenterPage: true,
-            aspectRatio: 10.0,
           ),
-          items: movies.asMap().entries.map((item) {
-            int index = item.key ; 
-            Movie value = item.value ; 
-            return Builder(
-              builder: (BuildContext context) {
-                return GestureDetector(
-                  onTap: () => {
-                     bottomsheets(context, movies[index] , videoProvider)   //modal_bottomSheet_widget
-                  } ,
-                  child: Container(
-                    height: MediaQuery.of(context).size.height * 1,
-                    margin: EdgeInsets.symmetric(horizontal: 1.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        FadeInImage(
-                            placeholder:
-                                AssetImage("assets/images/no-image-width.png"),
-                            image: NetworkImage(value.fullBackdropPath),
-                            fit: BoxFit.contain,
-                            width: MediaQuery.of(context).size.width * 1) , 
-                        SizedBox(height: 10,) ,
-                        Text("${value.title}"),
-                      ],
+          CarouselSlider(
+            options: CarouselOptions(
+              // height: MediaQuery.of(context).size.height * 0.4,
+              height: 350,
+              autoPlay: true,
+              autoPlayAnimationDuration: Duration(
+                milliseconds: 800,
+              ),
+              enlargeCenterPage: true,
+              aspectRatio: 10.0,
+            ),
+            items: movies.asMap().entries.map((item) {
+              int index = item.key ; 
+              Movie value = item.value ; 
+              return Builder(
+                builder: (BuildContext context) {
+                  return GestureDetector(
+                    onTap: () => {
+                       bottomsheets(context, movies[index] , videoProvider)   //modal_bottomSheet_widget
+                    } ,
+                    child: Container(
+                      height: MediaQuery.of(context).size.height * 0.2,
+                      margin: EdgeInsets.symmetric(horizontal: 1.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          FadeInImage(
+                              placeholder:
+                                  AssetImage("assets/images/no-image-width.png"),
+                              image: NetworkImage(value.fullBackdropPath),
+                              fit: BoxFit.contain,
+                              width: MediaQuery.of(context).size.width * 1) , 
+                          SizedBox(height: 10,) ,
+                          Text("${value.title}"),
+                        ],
+                      ),
                     ),
-                  ),
-                );
-              },
-            );
-          }).toList(),
-        ),
-      ],
+                  );
+                },
+              );
+            }).toList(),
+          ),
+        ],
+      ),
     );
   }
 }
