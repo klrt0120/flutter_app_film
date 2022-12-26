@@ -7,6 +7,7 @@ import 'package:motchill/screens/search.dart';
 import 'package:motchill/screens/splash.dart';
 
 import '../../screens/authentication/signup.dart';
+import '../../screens/listBookmark.dart';
 import '../../screens/trailer.dart';
 
 class AppRoutes {
@@ -18,6 +19,7 @@ class AppRoutes {
   static const String SearchRoutes = "/search";
   static const String SplashRoutes = "/splash";
   static const String ProfileRoutes = "/profile";
+  static const String ListBookmarkRoutes  = "/listbookmark";
   static final routes = {
     LoginRoute: (context) => LoginView(),
     HomeRoutes: (context) => HomePage(),
@@ -26,7 +28,8 @@ class AppRoutes {
     SearchRoutes: (context) => SearchScreen(),
     SignupRoutes: (context) => SignupView(),
     SplashRoutes: (context) => SplashScreen(),
-    ProfileRoutes: (context) => ProfileScreen()
+    ProfileRoutes: (context) => ProfileScreen(),
+    ListBookmarkRoutes: (context) => ListBookmarkScreen()
 
 /*    SignupRoutes: (context) => SignupView(),
     HomeRoutes: (context) => HomeView(),*/
