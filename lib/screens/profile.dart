@@ -44,9 +44,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   height: 120,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(100),
-                    child: const Image(
-                      image: AssetImage(
-                        'assets/images/avartar.jpg',
+                    child: CircleAvatar(
+                      child: CircleAvatar(
+                        child: Text(
+                            "${arg['username'].toString().substring(0, 1).toUpperCase()}",
+                            style: TextStyle(fontSize: 40)),
                       ),
                     ),
                   ),

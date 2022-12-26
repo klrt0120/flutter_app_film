@@ -17,6 +17,7 @@ class SearchFilm extends StatefulWidget {
 class _SearchFilmState extends State<SearchFilm> {
   void initState() {
     super.initState();
+
     widget.getMovieGenres();
   }
 
