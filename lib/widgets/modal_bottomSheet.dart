@@ -227,7 +227,11 @@ void bottomsheets(context, Movie movies, MovieProvide video) {
                             color: "#ffffff",
                             icon: Icons.add_circle_outline_rounded,
                             title: "Danh sách",
-                            onTap: () => print("Danh sách")),
+                             onTap: () {
+                               Navigator.pushNamed(context, AppRoutes.ListBookmarkRoutes,
+                                   arguments: "a");
+                             },
+                        ),
                         VerticalIconButton(
                             color: "#ffffff",
                             icon: Icons.share,
