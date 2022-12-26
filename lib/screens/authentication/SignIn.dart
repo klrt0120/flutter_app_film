@@ -16,6 +16,7 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
+  // show or not show
   var _isVisible = false;
   final _supabaseClient = AuthenciationNotifier();
   TextEditingController emailController = TextEditingController();
