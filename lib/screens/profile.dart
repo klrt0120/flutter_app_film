@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:motchill/utils/consstants.dart';
 
+import '../core/supabase/supabase.dart';
 import '../providers/authenciation_provider.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -12,17 +13,20 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   final _supabaseClient = AuthenciationNotifier();
-
+  // List<dynamic> data = [];
+  var data = new Map();
   @override
   void iniState() {
-    
     super.initState();
   }
 
   Widget build(BuildContext context) {
+    final arg = ModalRoute.of(context)!.settings.arguments as Map;
+    print(arg['username']);
     return Scaffold(
         appBar: AppBar(
-          title: Text('Profile', style: Theme.of(context).textTheme.headline6),
+          title: Text('Profile ${arg['username']}',
+              style: Theme.of(context).textTheme.headline6),
         ),
         // body: Container(
         //   child: GestureDetector(
@@ -48,10 +52,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ),
                 const SizedBox(height: 10),
-                Text('Đoàn Quang Thái',
+                Text('${arg['username']}',
                     style: Theme.of(context).textTheme.headline4),
                 const SizedBox(height: 10),
-                Text('klrt0120@gmail.com',
+                Text('${arg['email']}',
                     style: Theme.of(context).textTheme.bodyText2),
                 const SizedBox(height: 20),
                 SizedBox(

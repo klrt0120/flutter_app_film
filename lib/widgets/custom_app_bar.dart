@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:motchill/core/routes/routes.dart';
+import 'package:motchill/core/supabase/supabase.dart';
 import 'package:motchill/widgets/appbarButton_widget.dart';
 
 import '../providers/authenciation_provider.dart';
@@ -47,11 +48,18 @@ class CustomAppBar extends StatelessWidget {
                     GestureDetector(
                       onTap: () {
                         () async {
-                          await _supabaseClient.getProfile();
+                          await _supabaseClient.getData();
                           Navigator.pushNamed(
                               context, "${AppRoutes.ProfileRoutes}",
-                              arguments: "a");
+                              arguments: {
+                                "username": _supabaseClient.user['username'],
+                                "email": _supabaseClient.user['email']
+                              });
                         }();
+                        // () async {
+                        //   await _supabaseClient.getProfile();
+
+                        // }();
                       },
                       child: CircleAvatar(
                         child: CircleAvatar(

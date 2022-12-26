@@ -3,11 +3,13 @@ import 'package:motchill/core/routes/routes.dart';
 import 'package:motchill/screens/authentication/SignIn.dart';
 import 'package:motchill/screens/home.dart';
 import 'package:motchill/screens/profile.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../core/supabase/supabase.dart';
 
 class AuthenciationNotifier extends ChangeNotifier {
   // Đăng nhập
+  var user = new Map();
   Future<void> SigninnUser(
     context, {
     String? email,
@@ -68,12 +70,21 @@ class AuthenciationNotifier extends ChangeNotifier {
     return;
   }
 
-  Future<void> getProfile() async {
+  Future getData() async {
     try {
-      final userId = SupabaseSetting.supabaseClient.auth.currentUser!.id;
-      final data =
-          await SupabaseSetting.supabaseClient.from('users').select("username");
-      print(data);
-    } catch (error) {}
+      final response = await SupabaseSetting.supabaseClient
+          .from('users')
+          .select('*')
+          .eq('userid', SupabaseSetting.supabaseClient.auth.currentUser!.id)
+          .execute();
+
+      if (response.data != null) {
+        var data = response.data;
+        print(user['username']);
+        user = data[0];
+
+        // print(user['username']);
+      }
+    } catch (e) {}
   }
 }
